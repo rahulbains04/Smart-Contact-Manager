@@ -7,7 +7,30 @@
 <body>
 <section>
 
-<h1>Row row row your boat gently through the town </h1>
+<div class="container">
+	<div class="card">
+		<div class="card-body my-5">
+		
+		<div class="container text-center">
+										
+										<img src="" style="height:200px; width:200px;" class="my_profile_picture" th:src="@{'/img/contact_logo.png'}" alt="profile photo" />
+										
+										</div>
+		
+		<h1 class="text-center mt-3 font-italic font-weight-light">
+		Start adding your contacts to the cloud!!!
+		</h1>
+		
+		<a th:href="@{/user/add-contact}" class="btn btn-primary btn-block text-uppercase mt-5">
+		
+		Add your contact
+		
+		</a>
+		
+		</div>
+	</div>
+</div>
+
 </section>
 </body>
 </html>
