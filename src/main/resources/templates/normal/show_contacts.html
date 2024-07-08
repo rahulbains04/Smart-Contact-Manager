@@ -35,9 +35,9 @@
 </div>
 
 
-
-<table class="table">
-		  <thead>
+<div class="table-responsive">
+<table class="table table-hover">
+		  <thead class="thead-dark">
 		    <tr>
 		      <th scope="col">Id</th>
 		      <th scope="col">Name</th>
@@ -83,6 +83,8 @@
 					  </tbody>
 </table>
 
+</div>
+
 
 <!-- Part of pagination -->
 
@@ -109,7 +111,14 @@
 
 </div>
 
-
+  <script>	
+    $(document).ready(()=>
+{
+	$(".item").removeClass("active");
+	$("#contacts-link").addClass("active");
+}
+);
+</script>
 
 </section>
 </body>

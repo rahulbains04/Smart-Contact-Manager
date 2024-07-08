@@ -14,6 +14,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,9 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -291,5 +295,41 @@ public class UserController {
 		return "normal/profile";
 	}
 	
+	//open settings handler
+	@GetMapping("/settings")
+	public String openSettings()
+	{
+		return "normal/settings";
+	}
+	
+	//change password handler
+	@PostMapping("/change-password")
+	public String changePassword(@RequestParam("oldPassword")String oldPassword,@RequestParam("newPassword")String newPassword
+			,Principal principal,HttpSession session)
+	{
+		System.out.println("old password: "+oldPassword+" ,new Password: "+newPassword);
+		
+		
+		String userName = principal.getName();
+		
+		User currentUser = this.userRepository.getUserByUserName(userName);
+		
+		System.out.println(currentUser.getPassword());
+		
+		
+		if( bCryptPasswordEncoder.matches(oldPassword,currentUser.getPassword()))
+		{
+			//change the password
+			currentUser.setPassword(bCryptPasswordEncoder.encode(newPassword));
+			userRepository.save(currentUser);
+			session.setAttribute("message",new Message("Your password was successfully changed...","success"));
+		}
+		else {
+			//give an error
+			session.setAttribute("message",new Message("Wrong current password","danger"));
+			return "redirect:/user/settings";
+		}
+		return "redirect:/user/index";
+	}
 	
 }
